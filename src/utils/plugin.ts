@@ -6,7 +6,6 @@ export enum langs {
 }
 export interface Configuration {
     language: langs
-    [key: string]: any
 }
 export interface Language {
     name: string
@@ -33,8 +32,8 @@ export class Plugin implements Plugin {
     private langsPath: string
     private usedLangPath: string
 
-    constructor(name: string, initConfiguration: Configuration, initTranslate: Language) {
-        this.name = name
+    constructor(initConfiguration: Configuration, initTranslate: Language) {
+        this.name = initTranslate.name
         this.configs = join(__dirname, '..', '..', '..', '..', 'config');
         this.configPath = join(this.configs, this.name);
         this.configFile = join(this.configPath, 'config.json');
