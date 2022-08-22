@@ -64,7 +64,7 @@ events.playerJoin.on((ev: PlayerJoinEvent) => {
         v.sendMessage(`${TextFormat.GRAY}[${TextFormat.GREEN}+${TextFormat.GRAY}] ${TextFormat.GOLD}${player_name}`);
     });
 
-    console.log('Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
+    console.log(`[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
     player.playSound('random.pop');
 })
 
@@ -79,7 +79,7 @@ events.playerLeft.on((ev: PlayerLeftEvent) => {
         v.sendMessage(`${TextFormat.GRAY}[${TextFormat.RED}-${TextFormat.GRAY}] ${TextFormat.GOLD}${player_name}`);
     });
 
-    console.log('Player disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
+    console.log(`[${getTime()}]`.gray, 'Player'.green, ' disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
 })
 
 
