@@ -34,7 +34,6 @@ events.serverClose.on(() => {
     plugin.log(`closed`);
 });
 
-
 //cancel vanilla message
 events.packetSend(MinecraftPacketIds.Text).on((packet: TextPacket, netId: NetworkIdentifier) => {
     if (packet.type !== TextPacket.Types.Translate) return;
@@ -51,7 +50,6 @@ events.packetSend(MinecraftPacketIds.Text).on((packet: TextPacket, ni: NetworkId
         packet.message = message;
     }
 })
-
 
 //join message
 events.playerJoin.on((ev: PlayerJoinEvent) => {
@@ -81,7 +79,6 @@ events.playerLeft.on((ev: PlayerLeftEvent) => {
 
     console.log(`[${getTime()}]`.gray, 'Player'.green, ' disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
 })
-
 
 // Clean console:
 events.serverLog.on((log: string, color: Color) => {
