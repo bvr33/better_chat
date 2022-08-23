@@ -3,7 +3,7 @@ import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { TextPacket } from "bdsx/bds/packets";
 import { events } from "bdsx/event";
 import { TextFormat } from "bdsx/util";
-import { plugin } from "..";
+import { plugin } from "../..";
 
 events.packetSend(MinecraftPacketIds.Text).on((packet: TextPacket, ni: NetworkIdentifier) => {
     if (packet.name !== "") {
