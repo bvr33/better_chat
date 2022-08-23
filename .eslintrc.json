@@ -2,30 +2,20 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module"
+      "ecmaVersion": 2017,
+      "sourceType": "module"
   },
-  "ignorePatterns": [
-    "**/*.js"
-  ],
+  "ignorePatterns": ["**/*.js", "/bdsx/**/*"],
   "plugins": [
-    "@typescript-eslint",
-    "import"
+      "@typescript-eslint",
+      "import"
   ],
   "rules": {
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": [
-          {
-            "group": [
-              "**/bdsx/*",
-              "!/bdsx/*"
-            ],
-            "message": "Please use the absolute path for bdsx libraries."
-          }
-        ]
-      }
-    ]
+      "no-restricted-imports": ["error", {
+        "patterns": [{
+          "group": ["**/bdsx/*", "!/bdsx/*"],
+          "message": "Please use the absolute path for bdsx libraries."
+        }]
+      }]
   }
 }

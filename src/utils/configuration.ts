@@ -25,3 +25,9 @@ export interface mainConfig {
     }
 
 }
+
+export enum Configs {
+    antiSpam,
+    rooms,
+    main,
+}

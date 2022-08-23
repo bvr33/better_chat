@@ -19,7 +19,7 @@ events.playerJoin.on( ( ev: PlayerJoinEvent ) => {
     } );
 
     console.log( `[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow );
-    player.playSound( 'random.pop' );
+    player.playSound( 'random.pop', pos, 1, 0, );
 } )
 
 //left message
