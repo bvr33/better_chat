@@ -6,25 +6,25 @@ import { roomsSettings } from "./roomsSettings";
 
 export const mainmenu = ( commandUser: ServerPlayer ) => {
 
-    const f = new SimpleForm( 'BetterChat menu',
+    const f = new SimpleForm( 'BetterChat Settings',
         '',
         [
             {
-                text: 'AntiSpam Settings',
+                text: 'AntiSpam',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'Rooms Settings',
+                text: 'Rooms',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'Main Settings',
+                text: 'Main',
                 image: {
                     type: 'path',
                     data: ''
@@ -33,14 +33,15 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
         ],
     )
     f.sendTo( commandUser.getNetworkIdentifier(), ( { response } ) => {
-        switch ( response ) {
-            case 1:
+        switch( response )
+        {
+            case 0:
                 antiSpamSettings( commandUser )
                 break;
-            case 2:
+            case 1:
                 roomsSettings( commandUser )
                 break;
-            case 3:
+            case 2:
                 mainSettings( commandUser )
                 break
         }

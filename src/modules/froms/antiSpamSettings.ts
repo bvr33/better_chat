@@ -7,6 +7,8 @@ export const antiSpamSettings = ( commandUser: ServerPlayer ): void => {
     f.addComponent( new FormToggle( 'enable', plugin.config.antiSpam.enable ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(), ( { response } ) => {
-        
-    })
+        plugin.config.antiSpam.enable = response[0]
+
+        plugin.updateConfig()
+    } )
 }

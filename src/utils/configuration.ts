@@ -5,6 +5,7 @@ export interface Configuration {
     rooms: roomsConfig
     main: mainConfig
 }
+
 export interface antiSpamConfig {
     enable: boolean
 }

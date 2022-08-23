@@ -29,13 +29,14 @@ export class Plugin implements Plugin {
         this.langsPath = join( this.configPath, 'lang' )
 
 
-        if ( !existsSync( this.configs ) ) mkdirSync( this.configs )
+        if( !existsSync( this.configs ) ) mkdirSync( this.configs )
 
-        if ( !existsSync( this.configPath ) ) mkdirSync( this.configPath )
+        if( !existsSync( this.configPath ) ) mkdirSync( this.configPath )
 
-        if ( !existsSync( this.langsPath ) ) mkdirSync( this.langsPath )
+        if( !existsSync( this.langsPath ) ) mkdirSync( this.langsPath )
 
-        if ( !existsSync( this.configFile ) ) {
+        if( !existsSync( this.configFile ) )
+        {
             writeFileSync( this.configFile, JSON.stringify( initConfiguration, null, 4 ) )
         }
 
@@ -43,22 +44,23 @@ export class Plugin implements Plugin {
 
         this.usedLangPath = join( this.langsPath, `${this.config.main.language}.json` )
 
-        if ( !existsSync( this.usedLangPath ) ) {
+        if( !existsSync( this.usedLangPath ) )
+        {
             writeFileSync( this.usedLangPath, JSON.stringify( initTranslate, null, 4 ) )
         }
         this.translate = JSON.parse( readFileSync( join( this.usedLangPath ), 'utf8' ) )
 
     }
 
-    public log ( message: string ): void {
+    public log( message: string ): void {
         const name: string = `[`.red + this.name.green + `]`.red
         const msg: string = `${message}`.green
         console.log( `${name} ${msg}` )
     }
 
-    public updateConfig (): void {
+    public updateConfig(): void {
         const configFromFIle = JSON.parse( readFileSync( this.configFile, 'utf8' ) )
-        if ( configFromFIle != this.config ) writeFileSync( this.configFile, JSON.stringify( this.config, null, 4 ) )
+        if( configFromFIle != this.config ) writeFileSync( this.configFile, JSON.stringify( this.config, null, 4 ) )
         this.log( 'config updated' )
     }
 

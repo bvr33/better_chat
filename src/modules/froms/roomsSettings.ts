@@ -7,6 +7,8 @@ export const roomsSettings = ( commandUser: ServerPlayer ): void => {
     f.addComponent( new FormToggle( 'enable', plugin.config.rooms.enable ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(), ( { response } ) => {
+        plugin.config.rooms.enable = response[ 0 ]
 
+        plugin.updateConfig()
     } )
 }
