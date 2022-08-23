@@ -3,6 +3,7 @@ import { events } from "bdsx/event";
 import { PlayerJoinEvent, PlayerLeftEvent } from "bdsx/event_impl/entityevent";
 import { bedrockServer } from "bdsx/launcher";
 import { TextFormat } from "bdsx/util";
+import { plugin } from "..";
 import { getTime } from "../utils/helpers";
 
 
@@ -14,7 +15,7 @@ events.playerJoin.on((ev: PlayerJoinEvent) => {
 
     const players = bedrockServer.level.getPlayers();
     players.forEach((v: ServerPlayer) => {
-        v.sendMessage(`${TextFormat.GRAY}[${TextFormat.GREEN}+${TextFormat.GRAY}] ${TextFormat.GOLD}${player_name}`);
+        v.sendMessage(`${plugin.config.eventsMessage.join} ${TextFormat.GOLD}${player_name}`);
     });
 
     console.log(`[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
@@ -29,7 +30,7 @@ events.playerLeft.on((ev: PlayerLeftEvent) => {
 
     const players = bedrockServer.level.getPlayers();
     players.forEach((v: ServerPlayer) => {
-        v.sendMessage(`${TextFormat.GRAY}[${TextFormat.RED}-${TextFormat.GRAY}] ${TextFormat.GOLD}${player_name}`);
+        v.sendMessage(`${plugin.config.eventsMessage.left} ${TextFormat.GOLD}${player_name}`);
     });
 
     console.log(`[${getTime()}]`.gray, 'Player'.green, ' disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor(pos.x)} ${Math.floor(pos.y)} ${Math.floor(pos.z)}`.yellow);
