@@ -118,7 +118,7 @@ export const plugin = new Plugin(
         },
         motd: {
             values: [
-                `${TextFormat.OBFUSCATED + 'xxx'}${TextFormat.RESET + TextFormat.RED}BQ${TextFormat.OBFUSCATED + 'xxx' + TextFormat.RESET} `
+                `${TextFormat.YELLOW}SERVER NAME`
             ],
             interval: 2,
             useDefault: false,
