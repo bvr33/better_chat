@@ -3,6 +3,7 @@ import { CustomForm, FormDropdown, FormInput, FormLabel, FormSlider, FormToggle,
 import { mainSettings } from "./mainSettings";
 import { antiSpamSettings } from "./antiSpamSettings";
 import { roomsSettings } from "./roomsSettings";
+import { motdSettings } from "./motdSettings";
 
 export const mainmenu = ( commandUser: ServerPlayer ) => {
 
@@ -43,6 +44,9 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
                 break;
             case 2:
                 mainSettings( commandUser )
+                break
+            case 3:
+                motdSettings( commandUser )
                 break
         }
     } )

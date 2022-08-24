@@ -1,5 +1,9 @@
+import { TextPacket } from "bdsx/bds/packets";
 import { ServerPlayer } from "bdsx/bds/player";
 import { bedrockServer } from "bdsx/launcher";
+import { TextFormat } from "bdsx/util";
+import { message } from "blessed";
+import { plugin } from "..";
 
 
 /**
@@ -61,4 +65,8 @@ export function getMentions( text: string ): string[] {
         result.push( group[1] || group[2] );
     }
     return result;
+}
+
+export const createMessage = ( name: string, message: string ): string => {
+    return `${name} ${TextFormat.RESET}${plugin.config.betterChat.messageSeparator}${TextFormat.RESET} ${message}`;
 }

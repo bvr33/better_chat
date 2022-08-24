@@ -15,7 +15,7 @@ export interface RoomMember {
     xuid: string;
 }
 class RoomsHandler {
-    private rooms: Room[] = []
+    public rooms: Room[] = []
 
     findByXuid( xuid: string ): { room: Room; index: number } | null {
         const room: Room | undefined = this.rooms.find( ( value: Room ) => value.owner.xuid == xuid || value.members.find( ( value: RoomMember ) => value.xuid == xuid ) );
@@ -41,7 +41,7 @@ class RoomsHandler {
         }
     }
 
-    createRoom( xuid: string, access: 'private' | 'public' = 'public', callback: ( room: Room | null, code?: string ) => void ) {
+    create( xuid: string, access: 'private' | 'public' = 'public', callback: ( room: Room | null, code?: string ) => void ) {
         if( this.findByXuid( xuid ) != null ) return callback( null );
         const player: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( xuid )!;
         let code: string | undefined;
@@ -78,7 +78,7 @@ class RoomsHandler {
         callback( this.findByXuid( xuid )?.room!, code );
     }
 
-    joinRoom( options: { xuid: string; ownerXuid?: string; code?: string }, callback: ( room: Room | undefined, owner: ServerPlayer | null, err: boolean ) => void ) {
+    join( options: { xuid: string; ownerXuid?: string; code?: string }, callback: ( room: Room | undefined, owner: ServerPlayer | null, err: boolean ) => void ) {
         const player: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( options.xuid )!;
         const room = this.findByXuid( options.ownerXuid! ) || this.findByCode( options.code! );
         if( room == null ) return callback( undefined, null, false );
@@ -86,7 +86,7 @@ class RoomsHandler {
         if( room?.room.owner.xuid == options.xuid || room?.room.members.find( ( value: RoomMember ) => value.xuid == options.xuid ) )
             return callback( room.room, owner, true );
 
-        if( this.findByXuid( options.xuid ) != null ) this.leaveRoom( options.xuid, () => { } );
+        if( this.findByXuid( options.xuid ) != null ) this.leave( options.xuid, () => { } );
         this.rooms[room?.index!].members.push( {
             username: player.getName(),
             xuid: options.xuid
@@ -94,7 +94,7 @@ class RoomsHandler {
         callback( room?.room, owner, false );
     }
 
-    leaveRoom( xuid: string, callback: ( room: Room | null ) => void ) {
+    leave( xuid: string, callback: ( room: Room | null ) => void ) {
         const player: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( xuid );
         const room = this.findByXuid( xuid );
         if( room == null ) return callback( null );
@@ -123,18 +123,6 @@ class RoomsHandler {
         if( room.room.owner.xuid != xuid ) return player?.sendMessage( '§cYou need to be the owner to dissolve the room' );
         this.rooms.splice( room?.index!, 1 );
         player?.sendMessage( '§eRoom dissolved' );
-    }
-
-    getMentions( text: string ): string[] {
-        const regex: RegExp = /@"([^"]*)|@([^]*)/g;
-        const resultado: string[] = [];
-        let grupo: RegExpExecArray | null;
-
-        while( ( grupo = regex.exec( text ) ) !== null )
-        {
-            resultado.push( grupo[1] || grupo[2] );
-        }
-        return resultado;
     }
 
 }
