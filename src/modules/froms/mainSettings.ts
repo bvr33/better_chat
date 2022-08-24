@@ -1,7 +1,6 @@
 import { CustomForm, FormInput, FormLabel, FormToggle } from "bdsx/bds/form";
 import { ServerPlayer } from "bdsx/bds/player";
 import { plugin } from "../..";
-import { Configs } from "../../utils/configuration";
 
 export const mainSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'Main Settings' )
@@ -19,6 +18,6 @@ export const mainSettings = ( commandUser: ServerPlayer ): void => {
         plugin.config.main.messageSeparator = response[3]
         plugin.config.main.eventsMessage.join = response[5]
         plugin.config.main.eventsMessage.left = response[6]
-        plugin.updateConfig(Configs.main)
+        plugin.updateConfig()
     } )
 }

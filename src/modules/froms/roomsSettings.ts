@@ -1,7 +1,6 @@
 import { CustomForm, FormToggle } from "bdsx/bds/form";
 import { ServerPlayer } from "bdsx/bds/player";
 import { plugin } from "../..";
-import { Configs } from "../../utils/configuration";
 
 export const roomsSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'Rooms Settings' )
@@ -10,6 +9,6 @@ export const roomsSettings = ( commandUser: ServerPlayer ): void => {
     f.sendTo( commandUser.getNetworkIdentifier(), ( { response } ) => {
         plugin.config.rooms.enable = response[ 0 ]
 
-        plugin.updateConfig(Configs.rooms)
+        plugin.updateConfig()
     } )
 }
