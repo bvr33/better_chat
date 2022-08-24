@@ -1,5 +1,5 @@
 
-import './modules/listeners'
+import './modules/eventsCapture'
 import { events } from "bdsx/event";
 import { Plugin } from "./utils/plugin";
 import { TextFormat } from "bdsx/util";
