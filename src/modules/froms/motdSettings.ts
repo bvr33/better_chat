@@ -64,7 +64,7 @@ const delMotd = ( commandUser: ServerPlayer ) => {
 const settings = ( commandUser: ServerPlayer ) => {
     const f = new CustomForm( 'MOTD Settings' )
     /*  >> 0  */    f.addComponent( new FormToggle( 'Use Default?', plugin.config.motd.useDefault ) )
-    /*  >> 1  */    f.addComponent( ( new FormSlider( "interval (seconds)", 5, 100, 1, plugin.config.motd.interval ) ) )
+    /*  >> 1  */    f.addComponent( ( new FormSlider( "interval (seconds)", 1, 100, 1, plugin.config.motd.interval ) ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
         async ( { response } ) => {

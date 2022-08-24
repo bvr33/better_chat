@@ -80,7 +80,7 @@ export const plugin = new Plugin(
         antiSpam: {
             enabled: true,
             mute: true,
-            seconds: 15,
+            seconds: 20,
             limit: 3
         },
         rooms: {
@@ -118,9 +118,11 @@ export const plugin = new Plugin(
         },
         motd: {
             values: [
-                `${TextFormat.YELLOW}SERVER NAME`
+                `${TextFormat.YELLOW}SERVER NAME`,
+                `${TextFormat.RED}SERVER NAME`,
+                `${TextFormat.BLUE}SERVER NAME`
             ],
-            interval: 2,
+            interval: 10,
             useDefault: false,
         }
     },
