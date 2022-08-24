@@ -10,7 +10,7 @@ export const motdSettings = ( commandUser: ServerPlayer ) => {
     f.addButton( new FormButton( 'Settings' ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             switch( response )
             {
                 case 0:
@@ -31,7 +31,7 @@ const addMotd = ( commandUser: ServerPlayer ) => {
     const f = new CustomForm( 'Add MOTD' )
     f.addComponent( new FormInput( 'add MOTD', 'MOTD', '' ) )
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             plugin.config.motd.values.push( response[0] )
             plugin.updateConfig()
             motdSettings( commandUser )
@@ -48,7 +48,7 @@ const delMotd = ( commandUser: ServerPlayer ) => {
 
 
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             const filteredResponse: boolean[] = response.filter( ( value: boolean | null ) => value != null )
             filteredResponse.forEach( ( v, i ) => {
                 if( v ) plugin.config.motd.values.splice( i, 1 )
@@ -64,7 +64,7 @@ const settings = ( commandUser: ServerPlayer ) => {
     /*  >> 1  */    f.addComponent( ( new FormSlider( "interval (seconds)", 5, 100, 1, plugin.config.motd.interval ) ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             plugin.config.motd.useDefault = response[0]
             plugin.config.motd.interval = response[1]
             plugin.updateConfig()

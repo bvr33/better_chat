@@ -2,13 +2,14 @@ import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/b
 import { ServerPlayer } from "bdsx/bds/player";
 import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
+import { mainmenu } from "./mainmenu";
 
 export const mainSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'Main Settings' )
     /*  >> 0  */    f.addComponent( new FormToggle( 'Chat Format', plugin.config.betterChat.enabled ) )
     /*  >> 1  */    f.addComponent( new FormToggle( 'log chat to console', plugin.config.betterChat.logToConsole ) )
     /*  >> 2  */    f.addComponent( ( new FormSlider( "Message cooldown", 1, 30, 1, plugin.config.betterChat.cooldown ) ) )
-    /*  >> 3  */    f.addComponent( ( new FormSlider( "Max Message Lenght", 10, 100, 1, plugin.config.betterChat.maxMessageLength ) ) )
+    /*  >> 3  */    f.addComponent( ( new FormSlider( "Max Message Lenght", 0, 100, 1, plugin.config.betterChat.maxMessageLength ) ) )
     /*   4    */    f.addComponent( new FormLabel( `Message Separoator` ) )
     /*  >> 5  */    f.addComponent( ( new FormInput( "<NICK> [SEPARATOR] <MESSAGE>", 'Separator', plugin.config.betterChat.messageSeparator ) ) )
     /*   6    */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
@@ -29,7 +30,7 @@ export const mainSettings = ( commandUser: ServerPlayer ): void => {
     /*  >> 21 */    f.addComponent( ( new FormInput( "Left", "message <PLAYER>", plugin.config.eventsMessage.left ) ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             plugin.config.betterChat.enabled = response[0]
             plugin.config.betterChat.logToConsole = response[1]
             plugin.config.betterChat.cooldown = response[2]
@@ -44,6 +45,7 @@ export const mainSettings = ( commandUser: ServerPlayer ): void => {
             plugin.config.eventsMessage.join = response[20]
             plugin.config.eventsMessage.left = response[21]
             plugin.updateConfig()
+            mainmenu( commandUser )
         }
     )
 }

@@ -13,7 +13,7 @@ export class Plugin implements Plugin {
     public config: Configuration;
     public name: string
 
-    private configs: string = join( __dirname, '..', '..', 'config' );
+    private configs: string = join( __dirname, '..', '..', '..', '..', 'config' );
     private configPath: string
     private configFile: string
     private langsPath: string
@@ -51,7 +51,7 @@ export class Plugin implements Plugin {
 
     public updateConfig(): void {
         const configFromFIle = JSON.parse( readFileSync( this.configFile, 'utf8' ) )
-        if( configFromFIle != this.config ) writeFileSync( this.configFile, JSON.stringify( this.config, null, 4 ) )
+        if( configFromFIle !== this.config ) writeFileSync( this.configFile, JSON.stringify( this.config, null, 4 ) )
         this.log( 'config updated' )
     }
 }

@@ -84,7 +84,7 @@ export const plugin = new Plugin(
             limit: 3
         },
         rooms: {
-            enabled: false,
+            enabled: true,
             messagePrefix: '[Room]',
             playerJoinRoom: 'player join',
             playerLeaveRoom: 'player left',
@@ -118,7 +118,7 @@ export const plugin = new Plugin(
         },
         motd: {
             values: [
-                `${TextFormat.OBFUSCATED + 'xxx'}${TextFormat.RESET + TextFormat.RED}BQ${TextFormat.OBFUSCATED + 'xxx'} `
+                `${TextFormat.OBFUSCATED + 'xxx'}${TextFormat.RESET + TextFormat.RED}BQ${TextFormat.OBFUSCATED + 'xxx' + TextFormat.RESET} `
             ],
             interval: 2,
             useDefault: false,
@@ -134,36 +134,45 @@ export const plugin = new Plugin(
     }
 )
 
-events.serverOpen.on( () => {
-    plugin.log( `launching` );
-} );
-
-events.serverClose.on( () => {
-    plugin.log( `closed` );
-} );
-
 events.serverOpen.on(
     () => {
+        plugin.log( `launching` );
+    }
+);
 
-        const cmd = command.register( 'bchat',
+events.serverClose.on(
+    () => {
+        plugin.log( `closed` );
+    }
+);
+
+events.serverOpen.on(
+    async () => {
+
+        const cmdAdm = command.register( 'bchat',
             'better chat settings form',
             CommandPermissionLevel.Operator
         )
-        cmd.overload(
-            ( _param, origin, _output ) => {
+
+        cmdAdm.overload(
+            async ( _param, origin, _output ) => {
                 if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red );
                 const commandUser = <ServerPlayer> origin.getEntity();
-                mainmenu( commandUser )
 
+                mainmenu( commandUser )
             },
-            {
-                settings: command.enum( 'option.action', 'settings' ),
-            }
+            {}
         );
+
+
+        const cmd = command.register( 'chat',
+            'better chat settings form',
+            CommandPermissionLevel.Normal
+        )
 
         // bchat room create
         cmd.overload(
-            ( param, origin, _output ) => {
+            async ( param, origin, _output ) => {
                 if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red );
                 const player: ServerPlayer = <ServerPlayer> origin.getEntity();
                 const xuid: string = player.getXuid();
@@ -177,8 +186,8 @@ events.serverOpen.on(
 
             },
             {
-                room: command.enum( 'option.action', 'room' ),
-                create: command.enum( 'option.create', 'create' ),
+                room: command.enum( 'action', 'room' ),
+                create: command.enum( 'create', 'create' ),
                 access: [command.enum( 'AccessType', 'private', 'public' ), true]
             }
         );
@@ -193,8 +202,8 @@ events.serverOpen.on(
                 roomsHandler.dissolve( xuid );
             },
             {
-                room: command.enum( 'option.action', 'room' ),
-                dissolve: command.enum( 'option.dissolve', 'dissolve' )
+                room: command.enum( 'action', 'room' ),
+                dissolve: command.enum( 'dissolve', 'dissolve' )
             }
         );
 
@@ -202,7 +211,7 @@ events.serverOpen.on(
 
         // bchat room join
         cmd.overload(
-            ( param, origin, _output ) => {
+            async ( param, origin, _output ) => {
                 if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red );
                 const player: ServerPlayer = <ServerPlayer> origin.getEntity();
                 const netId: NetworkIdentifier = player.getNetworkIdentifier();
@@ -258,8 +267,8 @@ events.serverOpen.on(
                 );
             },
             {
-                room: command.enum( 'option.action', 'room' ),
-                join: command.enum( 'option.join', 'join' ),
+                room: command.enum( 'action', 'room' ),
+                join: command.enum( 'join', 'join' ),
                 code: [CxxString, true]
             }
         );
@@ -267,7 +276,7 @@ events.serverOpen.on(
 
 
         cmd.overload(
-            ( param, origin, output ) => {
+            async ( param, origin, output ) => {
                 if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red );
                 const player: ServerPlayer = <ServerPlayer> origin.getEntity();
                 const xuid: string = player.getXuid();
@@ -278,8 +287,8 @@ events.serverOpen.on(
                 } );
             },
             {
-                room: command.enum( 'option.action', 'room' ),
-                leave: command.enum( 'option.leave', 'leave' )
+                room: command.enum( 'action', 'room' ),
+                leave: command.enum( 'leave', 'leave' )
             }
         );
 

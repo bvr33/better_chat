@@ -11,21 +11,28 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
         '',
         [
             {
-                text: 'AntiSpam',
+                text: 'ANTISPAM',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'Rooms',
+                text: 'ROOMS',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'Main',
+                text: 'MAIN',
+                image: {
+                    type: 'path',
+                    data: ''
+                }
+            },
+            {
+                text: 'MOTD',
                 image: {
                     type: 'path',
                     data: ''
@@ -33,21 +40,22 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
             },
         ],
     )
-    f.sendTo( commandUser.getNetworkIdentifier(), ( { response } ) => {
-        switch( response )
-        {
-            case 0:
-                antiSpamSettings( commandUser )
-                break;
-            case 1:
-                roomsSettings( commandUser )
-                break;
-            case 2:
-                mainSettings( commandUser )
-                break
-            case 3:
-                motdSettings( commandUser )
-                break
-        }
-    } )
+    f.sendTo( commandUser.getNetworkIdentifier(),
+        async ( { response } ) => {
+            switch( response )
+            {
+                case 0:
+                    antiSpamSettings( commandUser )
+                    break;
+                case 1:
+                    roomsSettings( commandUser )
+                    break;
+                case 2:
+                    mainSettings( commandUser )
+                    break
+                case 3:
+                    motdSettings( commandUser )
+                    break
+            }
+        } )
 }

@@ -51,60 +51,64 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         };
 
 
-        // Cooldown:
-        if( cooldown.has( xuid ) && room?.access != 'private' )
+        // Public room and normal chat:
+        if( room?.access != 'private' )
         {
-            // @ts-ignore
-            const left: number = Math.ceil( ( cooldown.get( xuid )?._idleStart + cooldown.get( xuid )?._idleTimeout ) / 1000 - process.uptime() );
-            player.sendMessage( `§cYou are sending chats too faster!. Wait §6${left} §cmore seconds to speak again` );
-            return CANCEL;
-        };
 
-
-        // Max-Length:
-        if( plugin.config.betterChat.maxMessageLength !== 0
-            && packet.message.length > plugin.config.betterChat.maxMessageLength
-            && room?.access != 'private'
-        )
-        {
-            player.sendMessage( `§cYour message is too long (§6${plugin.config.betterChat.maxMessageLength} §ccaracter limit)` );
-            return CANCEL;
-        };
-
-
-        // Anti-Spam:
-        if( plugin.config.antiSpam.enabled && plugin.config.antiSpam.limit > 0 && room?.access != 'private' )
-        {
-            let messages: string[] = spam.get( xuid )!;
-            messages.push( packet.message );
-
-            if( messages.length >= plugin.config.antiSpam.limit )
+            // Cooldown:
+            if( cooldown.has( xuid ) )
             {
+                // @ts-ignore
+                const left: number = Math.ceil( ( cooldown.get( xuid )?._idleStart + cooldown.get( xuid )?._idleTimeout ) / 1000 - process.uptime() );
+                player.sendMessage( `§cYou are sending chats too faster!. Wait §6${left} §cmore seconds to speak again` );
+                return CANCEL;
+            };
 
-                if( messages.every( ( value: string ) => value == packet.message ) && messages.length >= plugin.config.antiSpam.limit )
+
+            // Max-Length:
+            if( plugin.config.betterChat.maxMessageLength !== 0 && packet.message.length > plugin.config.betterChat.maxMessageLength
+            )
+            {
+                player.sendMessage( `§cYour message is too long (§6${plugin.config.betterChat.maxMessageLength} §ccaracter limit)` );
+                return CANCEL;
+            };
+            // Anti-Spam:
+            if( plugin.config.antiSpam.enabled && plugin.config.antiSpam.limit > 0 )
+            {
+                let messages: string[] = spam.get( xuid )!;
+                messages.push( packet.message );
+
+                if( messages.length >= plugin.config.antiSpam.limit )
                 {
-                    if( !plugin.config.antiSpam.mute ) player.sendMessage( `§cYou can't send the same message §6${plugin.config.antiSpam.limit} §ctimes` );
-                    else
+
+                    if( messages.every( ( value: string ) => value == packet.message ) && messages.length >= plugin.config.antiSpam.limit )
                     {
-                        player.sendMessage( `§cYou has been muted for spamming. You will be able to talk in §6${plugin.config.antiSpam.seconds} §cseconds` );
-                        mute.set( xuid, setTimeout( () => mute.delete( xuid ), 1000 * plugin.config.antiSpam.seconds ) );
-                        sendMessageToAll( `§6${player.getName()} §ehas been muted for spamming` );
-                        messages = [];
+                        if( !plugin.config.antiSpam.mute ) player.sendMessage( `§cYou can't send the same message §6${plugin.config.antiSpam.limit} §ctimes` );
+                        else
+                        {
+                            player.sendMessage( `§cYou has been muted for spamming. You will be able to talk in §6${plugin.config.antiSpam.seconds} §cseconds` );
+                            mute.set( xuid, setTimeout( () => mute.delete( xuid ), 1000 * plugin.config.antiSpam.seconds ) );
+                            sendMessageToAll( `§6${player.getName()} §ehas been muted for spamming` );
+                            messages = [];
+                        }
+                        messages.shift();
+                        spam.set( xuid, messages );
+                        return CANCEL;
                     }
                     messages.shift();
-                    spam.set( xuid, messages );
-                    return CANCEL;
                 }
-                messages.shift();
-            }
-            spam.set( xuid, messages );
-        };
+                spam.set( xuid, messages );
+            };
+
+
+            // Cooldown between messages:
+            if( plugin.config.betterChat.cooldown != 0 && room?.access == 'public' ) cooldown.set( xuid, setTimeout( () => cooldown.delete( xuid ), 1000 * plugin.config.betterChat.cooldown ) );
+        }
 
 
         // Sound on @mention:
         if( plugin.config.soundOnMention.enabled )
         {
-
             bedrockServer.level.getPlayers().forEach( ( value: ServerPlayer ) => {
                 if( getMentions( packet.message ).includes( value.getName() ) && ( room == roomsHandler.findByXuid( value.getXuid() )?.room || !room ) )
                     value.playSound( plugin.config.soundOnMention.sound );
@@ -113,9 +117,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
 
 
         // Message history:
-        if( plugin.config.messageHistory.enabled
-            && plugin.config.messageHistory.limit <= 0 && !room
-        )
+        if( plugin.config.messageHistory.enabled && plugin.config.messageHistory.limit <= 0 && !room )
         {
             if( history.length >= plugin.config.messageHistory.limit ) history.shift();
             history.push( {
@@ -123,14 +125,6 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
                 content: packet.message
             } );
         };
-
-
-        // Log chats in console:
-        if( plugin.config.betterChat.logToConsole === true && !room ) console.log( `<${player.getName()}>`.green, packet.message.replace( /§[0-z]/g, '' ).yellow );
-
-
-        // Cooldown between messages:
-        if( plugin.config.betterChat.cooldown != 0 && room?.access == 'public' ) cooldown.set( xuid, setTimeout( () => cooldown.delete( xuid ), 1000 * plugin.config.betterChat.cooldown ) );
 
 
         // Room message:
@@ -146,5 +140,9 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
             } );
             return CANCEL;
         }
+
+        // Log chats in console:
+        if( plugin.config.betterChat.logToConsole ) console.log( '[CHAT]'.grey, `${player.getName()}`.green, '>'.gray, packet.message.replace( /§[0-z]/g, '' ).yellow );
+
     }
 )

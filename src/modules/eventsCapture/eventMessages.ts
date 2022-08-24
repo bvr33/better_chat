@@ -2,42 +2,47 @@ import { Certificate, ConnectionRequest } from "bdsx/bds/connreq";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { LoginPacket } from "bdsx/bds/packets";
-import { ServerPlayer } from "bdsx/bds/player";
+import { Player, ServerPlayer } from "bdsx/bds/player";
 import { events } from "bdsx/event";
-import { PlayerJoinEvent, PlayerLeftEvent } from "bdsx/event_impl/entityevent";
+import { PlayerJoinEvent, PlayerLeftEvent, PlayerSleepInBedEvent } from "bdsx/event_impl/entityevent";
 import { bedrockServer } from "bdsx/launcher";
 import { TextFormat } from "bdsx/util";
 import { Configuration, plugin } from "../..";
-import { getTime } from "../../utils/helpers";
+import { getTime, sendActionbar, sendMessageToAll, sleepCount } from "../../utils/helpers";
 import { addresses, spam } from "./chat";
 
 
 
-events.playerJoin.on( ( ev: PlayerJoinEvent ) => {
-    const player: ServerPlayer = ev.player;
-    const player_name: string = player.getName();
-    const address: string = player.getNetworkIdentifier().getAddress().split( '|' )[0];
-    const xuid: string = player.getXuid();
-    const pos = player.getPosition();
+events.playerJoin.on(
+    async ( ev: PlayerJoinEvent ) => {
+        const player: ServerPlayer = ev.player;
+        const player_name: string = player.getName();
+        const address: string = player.getNetworkIdentifier().getAddress().split( '|' )[0];
+        const xuid: string = player.getXuid();
+        const pos = player.getPosition();
 
-    // Save address:
-    addresses.set( xuid, address );
+        // Save address:
+        addresses.set( xuid, address );
 
-    // Anti-Spam stuff:
-    spam.set( xuid, [] );
+        // Anti-Spam stuff:
+        spam.set( xuid, [] );
 
-    const players = bedrockServer.level.getPlayers();
-    players.forEach( ( v: ServerPlayer ) => {
-        v.sendMessage( `${plugin.config.eventsMessage.join} ${TextFormat.GOLD}${player_name}` );
-    } );
+        if( !plugin.config.betterChat.enabled ) return
 
-    console.log( `[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow );
-    if( plugin.config.soundOnJoin.enabled )
-    {
-        player.playSound( plugin.config.soundOnJoin.sound, pos, 1, 0, );
+        const players = bedrockServer.level.getPlayers();
+        players.forEach(
+            ( v: ServerPlayer ) => {
+                v.sendMessage( `${plugin.config.eventsMessage.join} ${TextFormat.GOLD}${player_name}` );
+            }
+        );
+
+        console.log( `[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow );
+        if( plugin.config.soundOnJoin.enabled )
+        {
+            player.playSound( plugin.config.soundOnJoin.sound, pos, 1, 0, );
+        }
     }
-
-} )
+)
 
 //Join Message
 events.packetAfter( MinecraftPacketIds.Login ).on( ( packet: LoginPacket, netId: NetworkIdentifier ) => {
@@ -61,25 +66,54 @@ events.packetAfter( MinecraftPacketIds.Login ).on( ( packet: LoginPacket, netId:
 
 
 //left message
-events.playerLeft.on( ( ev: PlayerLeftEvent ) => {
-    const player: ServerPlayer = ev.player;
-    const player_name: string = player.getName();
-    const pos = player.getPosition();
-    const xuid: string = player.getXuid();
+events.playerLeft.on(
+    ( ev: PlayerLeftEvent ) => {
+        const player: ServerPlayer = ev.player;
+        const player_name: string = player.getName();
+        const pos = player.getPosition();
+        const xuid: string = player.getXuid();
 
-    // Save address:
-    addresses.delete( xuid );
+        // Save address:
+        addresses.delete( xuid );
 
-    // Anti-Spam stuff:
-    spam.delete( xuid );
+        // Anti-Spam stuff:
+        spam.delete( xuid );
 
+        if( !plugin.config.betterChat.enabled ) return
 
-    const players = bedrockServer.level.getPlayers();
-    players.forEach( ( v: ServerPlayer ) => {
-        v.sendMessage( `${plugin.config.eventsMessage.left} ${TextFormat.GOLD}${player_name}` );
-    } );
+        const players = bedrockServer.level.getPlayers();
+        players.forEach(
+            ( v: ServerPlayer ) => {
+                v.sendMessage( `${plugin.config.eventsMessage.left} ${TextFormat.GOLD}${player_name}` );
+            }
+        );
 
-    console.log( `[${getTime()}]`.gray, 'Player'.green, ' disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow );
-} )
+        console.log( `[${getTime()}]`.gray, 'Player'.green, ' disconected:'.red, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow );
+    }
+)
 
+// Sleep message:
+events.playerSleepInBed.on(
+    async ( event: PlayerSleepInBedEvent ) => {
+        if( !plugin.config.betterChat.enabled ) return
 
+        const player: Player = event.player;
+        setTimeout(
+            () => {
+                if( !player.isSleeping() ) return;
+                sendMessageToAll( plugin.config.eventsMessage.sleep.chat )
+
+                // Sleep actionbar message:
+                const interval: NodeJS.Timeout = setInterval(
+                    () => {
+                        if( sleepCount() == 0 ) return clearInterval( interval );
+                        if( plugin.config.eventsMessage.sleep.actionbar.trim().length != 0 )
+                            sendActionbar( plugin.config.eventsMessage.sleep.actionbar );
+                    },
+                    500
+                );
+            },
+            100
+        );
+    }
+);

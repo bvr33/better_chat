@@ -2,6 +2,7 @@ import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/b
 import { ServerPlayer } from "bdsx/bds/player";
 import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
+import { mainmenu } from "./mainmenu";
 
 export const antiSpamSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'AntiSpam Settings' )
@@ -11,13 +12,14 @@ export const antiSpamSettings = ( commandUser: ServerPlayer ): void => {
     /*  >> 3  */    f.addComponent( ( new FormSlider( "message limit", 1, 10, 1, plugin.config.antiSpam.limit ) ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
-        ( { response } ) => {
+        async ( { response } ) => {
             plugin.config.antiSpam.enabled = response[0]
             plugin.config.antiSpam.mute = response[1]
             plugin.config.antiSpam.seconds = response[2]
             plugin.config.antiSpam.limit = response[3]
 
             plugin.updateConfig()
+            mainmenu(commandUser)
         }
     )
 }
