@@ -50,3 +50,15 @@ export function sendActionbar( message: string ): number {
 export function sleepCount(): number {
     return bedrockServer.level.getPlayers().filter( ( value: ServerPlayer ) => value.isSleeping() ).length;
 }
+
+export function getMentions( text: string ): string[] {
+    const regex: RegExp = /@"([^"]*)|@([^]*)/g;
+    const result: string[] = [];
+    let group: RegExpExecArray | null;
+
+    while( ( group = regex.exec( text ) ) !== null )
+    {
+        result.push( group[1] || group[2] );
+    }
+    return result;
+}

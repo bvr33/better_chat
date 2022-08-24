@@ -7,24 +7,54 @@ import { command } from 'bdsx/command'
 import { CommandPermissionLevel } from "bdsx/bds/command";
 import { mainmenu } from "./modules/froms/mainmenu";
 
+
 export const plugin = new Plugin(
     {
         language: langs.PL,
         antiSpam: {
-            enable: true
+            enabled: true,
+            mute: true,
+            seconds: 15,
+            Messagelimit: 3
         },
         rooms: {
             enable: false,
+            messagePrefix: '[Room]',
+            playerJoinRoom: 'player join',
+            playerLeaveRoom: 'player left',
         },
-        main: {
+        betterChat: {
             enable: true,
             logToConsole: false,
             messageSeparator: `${TextFormat.DARK_AQUA}>`,
-            eventsMessage: {
-                join: `${TextFormat.GRAY}[${TextFormat.GREEN}+${TextFormat.GRAY}]`,
-                left: `${TextFormat.GRAY}[${TextFormat.RED}-${TextFormat.GRAY}]`
+            maxMessageLength: 30,
+        },
+        messageHistory: {
+            enabled: true,
+            limit: 10,
+        },
+        soundOnMention: {
+            enabled: true,
+            sound: 'random.orb',
+        },
+        soundOnJoin: {
+            enabled: true,
+            sound: 'random.orb',
+        },
+        eventsMessage: {
+            join: `${TextFormat.GRAY}[${TextFormat.GREEN}+${TextFormat.GRAY}]`,
+            left: `${TextFormat.GRAY}[${TextFormat.RED}-${TextFormat.GRAY}]`,
+            sleep: {
+                chat: 'Player',
+                actionbar: 'players',
             }
-
+        },
+        motd: {
+            values: [
+                `${TextFormat.OBFUSCATED + 'xxx'}${TextFormat.RESET + TextFormat.RED}BQ${TextFormat.OBFUSCATED + 'xxx'}`
+            ],
+            interval: 2,
+            useDefault: false,
         }
     },
     {
