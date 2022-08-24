@@ -133,11 +133,12 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
             const chat: string = `${plugin.config.rooms.messagePrefix} ${TextFormat.RESET}${createMessage( packet.name, packet.message )}`
             const owner: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( room.owner.xuid );
             owner.sendMessage( chat );
-            room.members.forEach( ( value: RoomMember ) => {
-                const member: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( value.xuid );
-
-                member.sendMessage( chat );
-            } );
+            room.members.forEach(
+                ( value: RoomMember ) => {
+                    const member: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( value.xuid );
+                    member.sendMessage( chat );
+                }
+            );
             return CANCEL;
         }
 
