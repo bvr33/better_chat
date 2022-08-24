@@ -13,7 +13,7 @@ import { serverProperties } from 'bdsx/serverproperties';
 import { CxxString } from 'bdsx/nativetype';
 import { Form, FormButton, SimpleForm } from 'bdsx/bds/form';
 import { NetworkIdentifier } from 'bdsx/bds/networkidentifier';
-
+import './modules/motd';
 
 export enum langs {
     PL = "PL_pl"
@@ -86,8 +86,8 @@ export const plugin = new Plugin(
         rooms: {
             enabled: true,
             messagePrefix: '[Room]',
-            playerJoinRoom: 'player join',
-            playerLeaveRoom: 'player left',
+            playerJoinRoom: '(+)',
+            playerLeaveRoom: '(-)',
         },
         betterChat: {
             enabled: true,
@@ -112,8 +112,8 @@ export const plugin = new Plugin(
             join: `${TextFormat.GRAY} [${TextFormat.GREEN} + ${TextFormat.GRAY}]`,
             left: `${TextFormat.GRAY} [${TextFormat.RED} - ${TextFormat.GRAY}]`,
             sleep: {
-                chat: 'Player',
-                actionbar: 'players',
+                chat: 'is sleeping..',
+                actionbar: 'players slepping',
             }
         },
         motd: {
@@ -290,21 +290,6 @@ events.serverOpen.on(
                 room: command.enum( 'action', 'room' ),
                 leave: command.enum( 'leave', 'leave' )
             }
-        );
-
-        let i: number = 0;
-        const interval = setInterval(
-            () => {
-                if( bedrockServer.isClosed() ) return clearInterval( interval );
-
-                if( plugin.config.motd.useDefault ) return bedrockServer.serverInstance.setMotd( serverProperties["server-name"]! );
-                if( plugin.config.motd.interval == 0 ) i = 0;
-                bedrockServer.serverInstance.setMotd( plugin.config.motd.values[i] );
-
-                if( i == ( plugin.config.motd.values.length - 1 ) ) return i = 0;
-                i++;
-            },
-            1000 * plugin.config.motd.interval
         );
     }
 );

@@ -101,14 +101,14 @@ events.playerSleepInBed.on(
         setTimeout(
             () => {
                 if( !player.isSleeping() ) return;
-                sendMessageToAll( plugin.config.eventsMessage.sleep.chat )
+                sendMessageToAll( `${player.getName()} ${plugin.config.eventsMessage.sleep.chat}` )
 
                 // Sleep actionbar message:
                 const interval: NodeJS.Timeout = setInterval(
                     () => {
                         if( sleepCount() == 0 ) return clearInterval( interval );
                         if( plugin.config.eventsMessage.sleep.actionbar.trim().length != 0 )
-                            sendActionbar( plugin.config.eventsMessage.sleep.actionbar );
+                            sendActionbar( `${sleepCount()} ${plugin.config.eventsMessage.sleep.actionbar}` );
                     },
                     500
                 );

@@ -2,6 +2,7 @@ import { CustomForm, FormButton, FormInput, FormLabel, FormSlider, FormToggle, S
 import { ServerPlayer } from "bdsx/bds/player";
 import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
+import { motdLoop } from "../motd";
 
 export const motdSettings = ( commandUser: ServerPlayer ) => {
     const f = new SimpleForm( 'Motd Settings' )
@@ -34,6 +35,7 @@ const addMotd = ( commandUser: ServerPlayer ) => {
         async ( { response } ) => {
             plugin.config.motd.values.push( response[0] )
             plugin.updateConfig()
+            motdLoop.updateMessage()
             motdSettings( commandUser )
         }
     )
@@ -54,6 +56,7 @@ const delMotd = ( commandUser: ServerPlayer ) => {
                 if( v ) plugin.config.motd.values.splice( i, 1 )
             } )
             plugin.updateConfig()
+            motdLoop.updateMessage()
             motdSettings( commandUser )
         }
     );
