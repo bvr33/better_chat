@@ -1,7 +1,7 @@
 
 import './modules/eventsCapture'
 import { events } from "bdsx/event";
-import { langs, Plugin } from "./utils/plugin";
+import { langs, Plugin } from "@bdsx/plugin_base";
 import { TextFormat } from "bdsx/util";
 import { command } from 'bdsx/command'
 import { CommandPermissionLevel } from "bdsx/bds/command";
