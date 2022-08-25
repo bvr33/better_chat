@@ -7,12 +7,12 @@ let loop: NodeJS.Timeout
 let messageIndex: number = 0
 let messagesCount: number
 
-export const motdLoop = {
+export namespace motdLoop {
 
-    start: (): void => {
+    export function start(): void {
         if( !plugin.config.motd.useDefault )
         {
-            motdLoop.updateMessage()
+            updateMessage()
 
             loop = setInterval(
                 () => {
@@ -28,7 +28,7 @@ export const motdLoop = {
                     if( plugin.config.motd.useDefault )
                     {
                         bedrockServer.serverInstance.setMotd( serverProperties["server-name"]! );
-                        motdLoop.stop()
+                        stop()
                         return
                     }
                     bedrockServer.serverInstance.setMotd( message );
@@ -37,21 +37,21 @@ export const motdLoop = {
                 1000 * plugin.config.motd.interval
             )
         }
-    },
+    }
 
-    stop: (): void => {
+    export function stop(): void {
         clearInterval( loop )
-    },
+    }
 
-    updateMessage: (): void => {
+    export function updateMessage(): void {
         plugin.updateConfig()
         messagesCount = plugin.config.motd.values.length - 1
     }
 
-}
+    events.serverOpen.on(
+        async () => {
+            start()
+        }
+    )
 
-events.serverOpen.on(
-    async () => {
-        motdLoop.start()
-    }
-)
+}
