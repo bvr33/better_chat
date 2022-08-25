@@ -33,9 +33,12 @@ const addMotd = ( commandUser: ServerPlayer ) => {
     f.addComponent( new FormInput( 'add MOTD', 'MOTD', '' ) )
     f.sendTo( commandUser.getNetworkIdentifier(),
         async ( { response } ) => {
-            plugin.config.motd.values.push( response[0] )
-            plugin.updateConfig()
-            motdLoop.updateMessage()
+            if( response[0] != '' )
+            {
+                plugin.config.motd.values.push( response[0] )
+                plugin.updateConfig()
+                motdLoop.updateMessage()
+            }
             motdSettings( commandUser )
         }
     )

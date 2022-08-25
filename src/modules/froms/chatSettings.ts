@@ -5,7 +5,7 @@ import { plugin } from "../..";
 import { mainmenu } from "./mainmenu";
 
 export const chatSettings = ( commandUser: ServerPlayer ): void => {
-    const f = new CustomForm( 'Main Settings' )
+    const f = new CustomForm( 'Chat Settings' )
     /*  >> 0  */    f.addComponent( new FormToggle( 'Chat Format', plugin.config.betterChat.enabled ) )
     /*  >> 1  */    f.addComponent( new FormToggle( 'log chat to console', plugin.config.betterChat.logToConsole ) )
     /*  >> 2  */    f.addComponent( ( new FormSlider( "Message cooldown", 1, 30, 1, plugin.config.betterChat.cooldown ) ) )
