@@ -8,14 +8,17 @@ import { bedrockServer } from "bdsx/launcher";
 import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
 import { createMessage, getMentions, sendMessageToAll } from "../../utils/helpers";
-import { roomsHandler, Room, RoomMember } from "../rooms";
-
-
+import { findRoomByXuid, Room, RoomMember } from "../rooms";
+//chat
 export const history: { author: string; content: string }[] = [];
+//chat
 export const cooldown = new Map<string, NodeJS.Timeout>();
+//antispam
 export const mute = new Map<string, NodeJS.Timeout>();
-export const addresses = new Map<string, string>();
+// antiSpam
 export const spam = new Map<string, string[]>();
+// not used
+export const addresses = new Map<string, string>();
 
 
 events.packetSend( MinecraftPacketIds.Text ).on(
@@ -38,7 +41,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
     ( packet: TextPacket, ni: NetworkIdentifier ) => {
         const player: ServerPlayer = <ServerPlayer> ni.getActor();
         const xuid: string = player.getXuid();
-        const room: Room | undefined = roomsHandler.findByXuid( xuid )?.room;
+        const room: Room | undefined = findRoomByXuid( xuid )?.room;
 
         // AntiSpam stuff:
         if( mute.has( xuid ) )
@@ -54,7 +57,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         if( room?.access != 'private' )
         {
 
-            // Cooldown:
+            //chat Cooldown:
             if( cooldown.has( xuid ) )
             {
                 // @ts-ignore
@@ -64,13 +67,14 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
             };
 
 
-            // Max-Length:
+            // chat message Max-Length:
             if( plugin.config.betterChat.maxMessageLength !== 0 && packet.message.length > plugin.config.betterChat.maxMessageLength
             )
             {
                 player.sendMessage( `§cYour message is too long (§6${plugin.config.betterChat.maxMessageLength} §ccaracter limit)` );
                 return CANCEL;
             };
+
             // Anti-Spam:
             if( plugin.config.antiSpam.enabled && plugin.config.antiSpam.limit > 0 )
             {
@@ -109,7 +113,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         if( plugin.config.soundOnMention.enabled )
         {
             bedrockServer.level.getPlayers().forEach( ( value: ServerPlayer ) => {
-                if( getMentions( packet.message ).includes( value.getName() ) && ( room == roomsHandler.findByXuid( value.getXuid() )?.room || !room ) )
+                if( getMentions( packet.message ).includes( value.getName() ) && ( room == findRoomByXuid( value.getXuid() )?.room || !room ) )
                     value.playSound( plugin.config.soundOnMention.sound );
             } );
         };
@@ -129,7 +133,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         // Room message:
         if( room )
         {
-            const chat: string = `${plugin.config.rooms.messagePrefix} ${TextFormat.RESET}${createMessage( packet.name, packet.message )}`
+            const chat: string = `${plugin.config.rooms.messagePrefix}${createMessage( packet.name, packet.message )}`
             const owner: ServerPlayer = <ServerPlayer> bedrockServer.level.getPlayerByXuid( room.owner.xuid );
             owner.sendMessage( chat );
             room.members.forEach(

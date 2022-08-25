@@ -98,6 +98,7 @@ events.playerSleepInBed.on(
         if( !plugin.config.betterChat.enabled ) return
 
         const player: Player = event.player;
+        
         setTimeout(
             () => {
                 if( !player.isSleeping() ) return;

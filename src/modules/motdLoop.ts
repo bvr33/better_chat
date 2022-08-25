@@ -3,63 +3,55 @@ import { bedrockServer } from "bdsx/launcher";
 import { serverProperties } from "bdsx/serverproperties";
 import { plugin } from "..";
 
+let loop: NodeJS.Timeout
+let messageIndex: number = 0
+let messagesCount: number
 
-export class MOTDLoop {
+export const motdLoop = {
 
-    private loop: NodeJS.Timeout
-    private messageIndex: number = 0
-    private messagesCount: number
-
-    constructor () {
-        events.serverOpen.on(
-            async () => {
-                this.start()
-            }
-        )
-    }
-
-    public start = () => {
+    start: (): void => {
         if( !plugin.config.motd.useDefault )
         {
-            this.updateMessage()
+            motdLoop.updateMessage()
 
-            this.loop = setInterval(
+            loop = setInterval(
                 () => {
                     let message: string
-                    if( this.messagesCount > 1 )
+                    if( messagesCount > 1 )
                     {
-                        if( this.messageIndex >= this.messagesCount ) this.messageIndex = 0
-                        else this.messageIndex++
-                    } else this.messageIndex = 0
+                        if( messageIndex >= messagesCount ) messageIndex = 0
+                        else messageIndex++
+                    } else messageIndex = 0
 
-                    message = plugin.config.motd.values[this.messageIndex]
+                    message = plugin.config.motd.values[messageIndex]
 
                     if( plugin.config.motd.useDefault )
                     {
                         bedrockServer.serverInstance.setMotd( serverProperties["server-name"]! );
-                        this.stop()
+                        motdLoop.stop()
                         return
                     }
                     bedrockServer.serverInstance.setMotd( message );
 
                 },
                 1000 * plugin.config.motd.interval
-
             )
-
         }
+    },
 
-    }
+    stop: (): void => {
+        clearInterval( loop )
+    },
 
-    public stop = () => {
-        clearInterval( this.loop )
-    }
-
-    public updateMessage = () => {
+    updateMessage: (): void => {
         plugin.updateConfig()
-        this.messagesCount = plugin.config.motd.values.length - 1
+        messagesCount = plugin.config.motd.values.length - 1
     }
 
 }
 
-export const motdLoop = new MOTDLoop()
+events.serverOpen.on(
+    async () => {
+        motdLoop.start()
+    }
+)

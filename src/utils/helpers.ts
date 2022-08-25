@@ -68,5 +68,5 @@ export function getMentions( text: string ): string[] {
 }
 
 export const createMessage = ( name: string, message: string ): string => {
-    return `${name} ${TextFormat.RESET}${plugin.config.betterChat.messageSeparator}${TextFormat.RESET} ${message}`;
+    return `${TextFormat.RESET}${name} ${TextFormat.RESET}${plugin.config.betterChat.messageSeparator} ${TextFormat.RESET}${message}`;
 }
