@@ -60,7 +60,7 @@ export function createRoom( xuid: string, access: 'private' | 'public' = 'public
     else
     {
         code = generate( {
-            length: 6,
+            length: 5,
             lowercase: false,
             uppercase: true,
             numbers: true,
