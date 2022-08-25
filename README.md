@@ -7,7 +7,7 @@ The plugin for bdsx
 
 ## **[Admin Command]**
 
-### Minecraft form for change plugin settings
+### Minecraft form to make changes into plugin configuration
 
 `/bchat`
 
