@@ -34,7 +34,6 @@ events.packetSend( MinecraftPacketIds.Text ).on(
 )
 
 
-
 events.packetBefore( MinecraftPacketIds.Text ).on(
     ( packet: TextPacket, ni: NetworkIdentifier ) => {
         const player: ServerPlayer = <ServerPlayer> ni.getActor();

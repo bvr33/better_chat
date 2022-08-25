@@ -4,7 +4,7 @@ import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
 import { mainmenu } from "./mainmenu";
 
-export const mainSettings = ( commandUser: ServerPlayer ): void => {
+export const chatSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'Main Settings' )
     /*  >> 0  */    f.addComponent( new FormToggle( 'Chat Format', plugin.config.betterChat.enabled ) )
     /*  >> 1  */    f.addComponent( new FormToggle( 'log chat to console', plugin.config.betterChat.logToConsole ) )

@@ -1,3 +1,3 @@
-import './preventVanilla'
+import './vanillaCancel'
 import './chat'
 import './eventMessages'

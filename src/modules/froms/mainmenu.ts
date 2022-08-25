@@ -1,6 +1,6 @@
 import { ServerPlayer } from "bdsx/bds/player";
 import { CustomForm, FormDropdown, FormInput, FormLabel, FormSlider, FormToggle, SimpleForm } from "bdsx/bds/form";
-import { mainSettings } from "./mainSettings";
+import { chatSettings } from "./chatSettings";
 import { antiSpamSettings } from "./antiSpamSettings";
 import { roomsSettings } from "./roomsSettings";
 import { motdSettings } from "./motdSettings";
@@ -11,28 +11,28 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
         '',
         [
             {
-                text: 'ANTISPAM',
+                text: 'antispam',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'ROOMS',
+                text: 'rooms',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'MAIN',
+                text: 'chat',
                 image: {
                     type: 'path',
                     data: ''
                 }
             },
             {
-                text: 'MOTD',
+                text: 'motd',
                 image: {
                     type: 'path',
                     data: ''
@@ -51,7 +51,7 @@ export const mainmenu = ( commandUser: ServerPlayer ) => {
                     roomsSettings( commandUser )
                     break;
                 case 2:
-                    mainSettings( commandUser )
+                    chatSettings( commandUser )
                     break
                 case 3:
                     motdSettings( commandUser )

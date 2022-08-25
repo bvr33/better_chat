@@ -18,7 +18,6 @@ export class MOTDLoop {
         )
     }
 
-
     public start = () => {
         if( !plugin.config.motd.useDefault )
         {
@@ -62,4 +61,5 @@ export class MOTDLoop {
     }
 
 }
+
 export const motdLoop = new MOTDLoop()

@@ -2,7 +2,7 @@ import { CustomForm, FormButton, FormInput, FormLabel, FormSlider, FormToggle, S
 import { ServerPlayer } from "bdsx/bds/player";
 import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
-import { motdLoop } from "../motd";
+import { motdLoop } from "../motdLoop";
 
 export const motdSettings = ( commandUser: ServerPlayer ) => {
     const f = new SimpleForm( 'Motd Settings' )
