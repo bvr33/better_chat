@@ -1,8 +1,8 @@
-import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form";
-import { ServerPlayer } from "bdsx/bds/player";
-import { TextFormat } from "bdsx/util";
-import { plugin } from "../..";
-import { mainmenu } from "./mainmenu";
+import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form"
+import { ServerPlayer } from "bdsx/bds/player"
+import { TextFormat } from "bdsx/util"
+import { plugin } from "../.."
+import { mainmenu } from "./mainmenu"
 
 export const chatSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'Chat Settings' )
@@ -19,15 +19,17 @@ export const chatSettings = ( commandUser: ServerPlayer ): void => {
     /*   10   */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
     /*   11   */    f.addComponent( new FormLabel( `${TextFormat.AQUA}Sound On Mention` ) )
     /*  >> 12 */    f.addComponent( new FormToggle( 'Enabled', plugin.config.soundOnMention.enabled ) )
-    /*  >> 13 */    f.addComponent( ( new FormInput( "Sound", "Sound", plugin.config.soundOnMention.sound ) ) )
-    /*   14   */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
-    /*   15   */    f.addComponent( new FormLabel( `${TextFormat.AQUA}Sound On Join` ) )
-    /*  >> 16 */    f.addComponent( new FormToggle( 'Enabled', plugin.config.soundOnJoin.enabled ) )
-    /*  >> 17 */    f.addComponent( ( new FormInput( "Sound", "Sound", plugin.config.soundOnJoin.sound ) ) )
-    /*   18   */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
-    /*   19   */    f.addComponent( new FormLabel( `${TextFormat.AQUA}Player events message` ) )
-    /*  >> 20 */    f.addComponent( ( new FormInput( "Join", "message <PLAYER>", plugin.config.eventsMessage.join ) ) )
-    /*  >> 21 */    f.addComponent( ( new FormInput( "Left", "message <PLAYER>", plugin.config.eventsMessage.left ) ) )
+    /*  >> 13 */    f.addComponent( ( new FormInput( "Sound", "Sound", plugin.config.soundOnMention.sound.name ) ) )
+    /*  >> 14 */    f.addComponent( ( new FormSlider( "Pitch", 0.1, 3, 0.1, plugin.config.soundOnMention.sound.pitch ) ) )
+    /*   15   */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
+    /*   16   */    f.addComponent( new FormLabel( `${TextFormat.AQUA}Sound On Join` ) )
+    /*  >> 17 */    f.addComponent( new FormToggle( 'Enabled', plugin.config.soundOnJoin.enabled ) )
+    /*  >> 18 */    f.addComponent( ( new FormInput( "Sound", "Sound", plugin.config.soundOnJoin.sound.name ) ) )
+    /*  >> 19 */    f.addComponent( ( new FormSlider( "Pitch", 0.1, 3, 0.1, plugin.config.soundOnJoin.sound.pitch ) ) )
+    /*   20   */    f.addComponent( new FormLabel( `${TextFormat.WHITE}---------------` ) )
+    /*   21   */    f.addComponent( new FormLabel( `${TextFormat.AQUA}Player events message` ) )
+    /*  >> 22 */    f.addComponent( ( new FormInput( "Join", "message <PLAYER>", plugin.config.eventsMessage.join ) ) )
+    /*  >> 23 */    f.addComponent( ( new FormInput( "Left", "message <PLAYER>", plugin.config.eventsMessage.left ) ) )
 
     f.sendTo( commandUser.getNetworkIdentifier(),
         async ( { response } ) => {
@@ -39,11 +41,13 @@ export const chatSettings = ( commandUser: ServerPlayer ): void => {
             plugin.config.messageHistory.enabled = response[8]
             plugin.config.messageHistory.limit = response[9]
             plugin.config.soundOnMention.enabled = response[12]
-            plugin.config.soundOnMention.sound = response[13]
-            plugin.config.soundOnJoin.enabled = response[16]
-            plugin.config.soundOnJoin.sound = response[17]
-            plugin.config.eventsMessage.join = response[20]
-            plugin.config.eventsMessage.left = response[21]
+            plugin.config.soundOnMention.sound.name = response[13]
+            plugin.config.soundOnMention.sound.pitch = response[14]
+            plugin.config.soundOnJoin.enabled = response[17]
+            plugin.config.soundOnJoin.sound.name = response[18]
+            plugin.config.soundOnJoin.sound.pitch = response[19]
+            plugin.config.eventsMessage.join = response[22]
+            plugin.config.eventsMessage.left = response[23]
             plugin.updateConfig()
             mainmenu( commandUser )
         }

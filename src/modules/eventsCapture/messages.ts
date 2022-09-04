@@ -38,7 +38,7 @@ events.playerJoin.on(
 
         console.log( `[${getTime()}]`.gray, 'Player connected:'.green, player.getName().yellow, 'Coords:'.green, `${Math.floor( pos.x )} ${Math.floor( pos.y )} ${Math.floor( pos.z )}`.yellow )
         if( plugin.config.soundOnJoin.enabled ) {
-            player.playSound( plugin.config.soundOnJoin.sound, pos, 1, 0, )
+            player.playSound( plugin.config.soundOnJoin.sound.name, undefined, undefined, plugin.config.soundOnJoin.sound.pitch )
         }
     }
 )

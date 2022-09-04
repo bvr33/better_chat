@@ -38,11 +38,17 @@ export interface Configuration {
     },
     soundOnMention: {
         enabled: boolean,
-        sound: string,
+        sound: {
+            name: string,
+            pitch: number
+        },
     },
     soundOnJoin: {
         enabled: true,
-        sound: string,
+        sound: {
+            name: string,
+            pitch: number
+        },
     },
     eventsMessage: {
         join: string,
@@ -61,7 +67,7 @@ export const plugin = new Plugin(
         antiSpam: {
             enabled: true,
             mute: true,
-            seconds: 20,
+            seconds: 10,
             limit: 3
         },
         rooms: {
@@ -78,16 +84,22 @@ export const plugin = new Plugin(
             maxMessageLength: 30,
         },
         messageHistory: {
-            enabled: true,
+            enabled: false,
             limit: 10,
         },
         soundOnMention: {
             enabled: true,
-            sound: 'random.orb',
+            sound: {
+                name: 'random.orb',
+                pitch: 1
+            },
         },
         soundOnJoin: {
             enabled: true,
-            sound: 'random.orb',
+            sound: {
+                name: 'random.toast',
+                pitch: 0.7
+            },
         },
         eventsMessage: {
             join: `${TextFormat.GRAY} [${TextFormat.GREEN} + ${TextFormat.GRAY}]`,

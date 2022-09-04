@@ -104,7 +104,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         if( plugin.config.soundOnMention.enabled ) {
             bedrockServer.level.getPlayers().forEach( ( value: ServerPlayer ) => {
                 if( getMentions( packet.message ).includes( value.getName() ) && ( room == findRoomByXuid( value.getXuid() )?.room || !room ) )
-                    value.playSound( plugin.config.soundOnMention.sound )
+                    value.playSound( plugin.config.soundOnMention.sound.name, undefined, undefined, plugin.config.soundOnMention.sound.pitch )
             } )
         };
 
