@@ -1,7 +1,7 @@
 
-import { events } from "bdsx/event";
-import { TextFormat } from "bdsx/util";
-import { Plugin } from './utils/plugin';
+import { events } from "bdsx/event"
+import { TextFormat } from "bdsx/util"
+import { Plugin } from './utils/plugin'
 import './commands'
 import './modules/eventsCapture'
 import './modules/motdLoop'
@@ -11,7 +11,6 @@ export enum langs {
 }
 
 export interface Language {
-    name: string
 }
 export interface Configuration {
     language: langs,
@@ -62,6 +61,7 @@ export interface Configuration {
 }
 
 export const plugin = new Plugin(
+    'Better chat',
     {
         language: langs.PL,
         antiSpam: {
@@ -114,19 +114,18 @@ export const plugin = new Plugin(
         }
     },
     {
-        name: 'Better chat',
     }
 )
 
 events.serverOpen.on(
     () => {
-        plugin.log( `launching` );
+        plugin.log( `launching` )
     }
-);
+)
 
 events.serverClose.on(
     () => {
-        plugin.log( `closed` );
+        plugin.log( `closed` )
     }
 );
 
