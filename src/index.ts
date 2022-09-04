@@ -4,7 +4,6 @@ import { TextFormat } from "bdsx/util"
 import { Plugin } from './utils/plugin'
 import './commands'
 import './modules/eventsCapture'
-import './modules/motdLoop'
 
 export enum langs {
     PL = "PL_pl"
@@ -52,11 +51,6 @@ export interface Configuration {
             chat: string
             actionbar: string,
         }
-    },
-    motd: {
-        values: string[],
-        interval: number,
-        useDefault: boolean,
     }
 }
 
@@ -103,15 +97,6 @@ export const plugin = new Plugin(
                 actionbar: 'players slepping',
             }
         },
-        motd: {
-            values: [
-                `${TextFormat.YELLOW}SERVER NAME`,
-                `${TextFormat.RED}SERVER NAME`,
-                `${TextFormat.BLUE}SERVER NAME`
-            ],
-            interval: 10,
-            useDefault: false,
-        }
     },
     {
     }
