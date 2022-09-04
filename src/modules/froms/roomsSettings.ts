@@ -1,6 +1,5 @@
 import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form";
 import { ServerPlayer } from "bdsx/bds/player";
-import { TextFormat } from "bdsx/util";
 import { plugin } from "../..";
 
 export const roomsSettings = ( commandUser: ServerPlayer ): void => {

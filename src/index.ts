@@ -98,7 +98,7 @@ export const plugin = new Plugin(
             enabled: true,
             sound: {
                 name: 'random.toast',
-                pitch: 0.7
+                pitch: 0.6
             },
         },
         eventsMessage: {
