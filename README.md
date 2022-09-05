@@ -1,5 +1,4 @@
-
-# better_chat Plugin
+# better_chat Plugin for bdsx
 
 The plugin for bdsx
 
