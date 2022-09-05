@@ -46,7 +46,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
         if( mute.has( xuid ) ) {
             // @ts-ignore
             const left: number = Math.ceil( ( mute.get( xuid )?._idleStart + mute.get( xuid )?._idleTimeout ) / 1000 - process.uptime() )
-            player.sendMessage( `§cYou are muted. Wait §6${left} §cmore seconds to speak again` )
+            player.sendMessage( `${TextFormat.RED}You are muted. Wait ${TextFormat.GOLD}${left} §cmore seconds to speak again` )
             return CANCEL
         };
 
@@ -58,7 +58,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
             if( cooldown.has( xuid ) ) {
                 // @ts-ignore
                 const left: number = Math.ceil( ( cooldown.get( xuid )?._idleStart + cooldown.get( xuid )?._idleTimeout ) / 1000 - process.uptime() )
-                player.sendMessage( `§cYou are sending chats too faster!. Wait §6${left} §cmore seconds to speak again` )
+                player.sendMessage( `${TextFormat.RED}You are sending chats too faster!. Wait ${TextFormat.GOLD}${left} ${TextFormat.RED}more seconds to speak again` )
                 return CANCEL
             };
 
@@ -66,7 +66,7 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
             // chat message Max-Length:
             if( plugin.config.betterChat.maxMessageLength !== 0 && packet.message.length > plugin.config.betterChat.maxMessageLength
             ) {
-                player.sendMessage( `§cYour message is too long (§6${plugin.config.betterChat.maxMessageLength} §ccaracter limit)` )
+                player.sendMessage( `${TextFormat.RED}Your message is too long (${TextFormat.GOLD}${plugin.config.betterChat.maxMessageLength} ${TextFormat.RED}Character limit)` )
                 return CANCEL
             };
 
@@ -78,11 +78,11 @@ events.packetBefore( MinecraftPacketIds.Text ).on(
                 if( messages.length >= plugin.config.antiSpam.limit ) {
 
                     if( messages.every( ( value: string ) => value == packet.message ) && messages.length >= plugin.config.antiSpam.limit ) {
-                        if( !plugin.config.antiSpam.mute ) player.sendMessage( `§cYou can't send the same message §6${plugin.config.antiSpam.limit} §ctimes` )
+                        if( !plugin.config.antiSpam.mute ) player.sendMessage( `${TextFormat.RED}You can't send the same message ${TextFormat.GOLD}${plugin.config.antiSpam.limit} ${TextFormat.RED}times` )
                         else {
-                            player.sendMessage( `§cYou has been muted for spamming. You will be able to talk in §6${plugin.config.antiSpam.seconds} §cseconds` )
+                            player.sendMessage( `${TextFormat.RED}You has been muted for spamming. You will be able to talk in ${TextFormat.GOLD}${plugin.config.antiSpam.seconds} ${TextFormat.RED}seconds` )
                             mute.set( xuid, setTimeout( () => mute.delete( xuid ), 1000 * plugin.config.antiSpam.seconds ) )
-                            sendMessageToAll( `§6${player.getName()} §ehas been muted for spamming` )
+                            sendMessageToAll( `${TextFormat.GOLD}${player.getName()} ${TextFormat.YELLOW}has been muted for spamming` )
                             messages = []
                         }
                         messages.shift()

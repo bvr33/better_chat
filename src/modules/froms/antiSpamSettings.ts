@@ -1,4 +1,4 @@
-import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form"
+import { CustomForm, FormSlider, FormToggle } from "bdsx/bds/form"
 import { ServerPlayer } from "bdsx/bds/player"
 import { plugin } from "../.."
 import { mainmenu } from "./mainmenu"
