@@ -73,14 +73,14 @@ export const plugin = new Plugin(
         rooms: {
             enabled: true,
             messagePrefix: '[Room]',
-            playerJoinRoom: '(+)',
-            playerLeaveRoom: '(-)',
+            playerJoinRoom: `${TextFormat.GRAY}(${TextFormat.GREEN}+${TextFormat.GRAY})`,
+            playerLeaveRoom: `${TextFormat.GRAY}(${TextFormat.RED}-${TextFormat.GRAY})`,
         },
         betterChat: {
             enabled: true,
             logToConsole: false,
             cooldown: 5,
-            messageSeparator: `${TextFormat.DARK_AQUA}> `,
+            messageSeparator: `${TextFormat.DARK_AQUA}>`,
             maxMessageLength: 30,
         },
         messageHistory: {
@@ -102,8 +102,8 @@ export const plugin = new Plugin(
             },
         },
         eventsMessage: {
-            join: `${TextFormat.GRAY} [${TextFormat.GREEN} + ${TextFormat.GRAY}]`,
-            left: `${TextFormat.GRAY} [${TextFormat.RED} - ${TextFormat.GRAY}]`,
+            join: `${TextFormat.GRAY}[${TextFormat.GREEN}+${TextFormat.GRAY}]`,
+            left: `${TextFormat.GRAY}[${TextFormat.RED}-${TextFormat.GRAY}]`,
             sleep: {
                 chat: 'is sleeping..',
                 actionbar: 'players slepping',

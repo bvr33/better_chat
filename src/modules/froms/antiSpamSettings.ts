@@ -1,8 +1,7 @@
-import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form";
-import { ServerPlayer } from "bdsx/bds/player";
-import { TextFormat } from "bdsx/util";
-import { plugin } from "../..";
-import { mainmenu } from "./mainmenu";
+import { CustomForm, FormInput, FormLabel, FormSlider, FormToggle } from "bdsx/bds/form"
+import { ServerPlayer } from "bdsx/bds/player"
+import { plugin } from "../.."
+import { mainmenu } from "./mainmenu"
 
 export const antiSpamSettings = ( commandUser: ServerPlayer ): void => {
     const f = new CustomForm( 'AntiSpam Settings' )
@@ -17,9 +16,8 @@ export const antiSpamSettings = ( commandUser: ServerPlayer ): void => {
             plugin.config.antiSpam.mute = response[1]
             plugin.config.antiSpam.seconds = response[2]
             plugin.config.antiSpam.limit = response[3]
-
             plugin.updateConfig()
-            mainmenu(commandUser)
+            mainmenu( commandUser )
         }
     )
 }
