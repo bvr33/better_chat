@@ -17,39 +17,42 @@ import { plugin } from "."
 events.serverOpen.on(
     async () => {
 
-        const adminCmd = command.register(
+        command.register(
             'bchat',
             'better chat settings form',
             CommandPermissionLevel.Operator
         )
+            .overload(
+                async ( param, origin, _output ) => {
+                    if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red )
+                    const commandUser = <ServerPlayer> origin.getEntity()
 
-        adminCmd.overload(
-            async ( param, origin, _output ) => {
-                if( origin.isServerCommandOrigin() ) return console.log( 'This command can only be executed by players'.red )
-                const commandUser = <ServerPlayer> origin.getEntity()
-
-                switch( param.option ) {
-                    case undefined:
-                        mainmenu( commandUser )
-                        break
-                    case 'chat':
-                        chatSettings( commandUser )
-                        break
-                    case 'antispam':
-                        antiSpamSettings( commandUser )
-                        break
-                    case 'rooms':
-                        roomsSettings( commandUser )
-                        break
+                    switch( param.option ) {
+                        case undefined:
+                            mainmenu( commandUser )
+                            break
+                        case 'chat':
+                            chatSettings( commandUser )
+                            break
+                        case 'antispam':
+                            antiSpamSettings( commandUser )
+                            break
+                        case 'rooms':
+                            roomsSettings( commandUser )
+                            break
+                    }
+                },
+                {
+                    option: [command.enum( 'settings', 'chat', 'antispam', 'rooms' ), true],
                 }
-            },
-            {
-                option: [command.enum( 'settings', 'chat', 'antispam', 'rooms' ), true],
-            }
+            )
+
+
+        const cmd = command.register(
+            'room',
+            'chat rooms',
+            CommandPermissionLevel.Normal
         )
-
-
-        const cmd = command.register( 'room', 'chat rooms', CommandPermissionLevel.Normal )
         // bchat room create
         cmd.overload(
             ( param, origin, _output ) => {
